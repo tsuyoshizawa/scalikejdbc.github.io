@@ -77,7 +77,7 @@
 <h3>What&rsquo;s SQLInterpolation</h3>
 
 <p>SQLInterpolation is an SQL builder which uses String interpolation since Scala 2.10. Add scalikejbdc-interpolation to libraryDependencies.</p>
-<pre class="highlight text">libraryDependencies += &quot;com.github.seratch&quot; %% &quot;scalikejdbc-interpolation&quot; % &quot;[1.6,)&quot;
+<pre class="highlight text">libraryDependencies += &quot;org.scalikejdbc&quot; %% &quot;scalikejdbc-interpolation&quot; % &quot;[1.7,)&quot;
 </pre>
 <p>The usage is pretty simple - just embedding values into sql&quot;&ldquo; template without <code>#bind</code> or <code>#bindByName</code>. It looks really cool.</p>
 <pre class="highlight java"><span class="kn">import</span> <span class="nn">scalikejdbc._</span><span class="o">,</span> <span class="n">SQLInterpolation</span><span class="o">.</span><span class="na">_</span>
