@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <!-- Use title if it's in the page YAML frontmatter -->
+    <title>ScalikeJDBC</title>
+    <script type="text/javascript" src="//codeorigin.jquery.com/jquery-1.10.2.min.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css"/>
+    <link href="/stylesheets/all.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/all.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+    <div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/"><img src="/images/logo_small.png" /></a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="/documentation" class="dropdown-toggle" data-toggle="dropdown">Documentation&nbsp;<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="/documentation/setup.html">Setup</a></li>
+                <li><a href="/documentation/configuration.html">Configuration</a></li>
+                <li><a href="/documentation/connection-pool.html">Connection Pool</a></li>
+                <li><a href="/documentation/operations.html">Operations</a></li>
+                <li><a href="/documentation/transaction.html">Transaction</a></li>
+                <li><a href="/documentation/auto-session.html">Auto Session</a></li>
+                <li><a href="/documentation/sql-interpolation.html">SQLInterpolation</a></li>
+                <li><a href="/documentation/query-dsl.html">QueryDSL</a></li>
+                <li><a href="/documentation/one-to-x.html">One-to-x API</a></li>
+                <li><a href="/documentation/query-inspector.html">Query Inspector</a></li>
+                <li><a href="/documentation/reverse-engineering.html">Reverse Engineering</a></li>
+                <li><a href="/documentation/testing.html">Testing</a></li>
+                <li><a href="/documentation/playframework-support.html">Play2 Support</a></li>
+                <li><a href="/contribution.html">Contribution</a></li>
+                <li><a href="/documentation/dbconsole.html">dbconsole</a></li>
+              </ul>
+            </li>
+            <li><a href="https://groups.google.com/group/scalikejdbc-users-group">Users Group</a></li>
+            <li><a href="https://github.com/scalikejdbc/scalikejdbc">Source</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+        <div class="col-xs-2">
+          <div class="content small">
+            <h5>Documentation</h5>
+            <hr/>
+            <p><a href="/documentation/setup.html">Setup</a></p>
+            <p><a href="/documentation/configuration.html">Configuration</a></p>
+            <p><a href="/documentation/connection-pool.html">Connection Pool</a></p>
+            <p><a href="/documentation/operations.html">Operations</a></p>
+            <p><a href="/documentation/transaction.html">Transaction</a></p>
+            <p><a href="/documentation/auto-session.html">Auto Session</a></p>
+            <p><a href="/documentation/sql-interpolation.html">SQLInterpolation</a></p>
+            <p><a href="/documentation/query-dsl.html">QueryDSL</a></p>
+            <p><a href="/documentation/one-to-x.html">One-to-x API</a></p>
+            <p><a href="/documentation/query-inspector.html">Query Inspector</a></p>
+            <p><a href="/documentation/reverse-engineering.html">Reverse Engineering</a></p>
+            <p><a href="/documentation/testing.html">Testing</a></p>
+            <p><a href="/documentation/playframework-support.html">Play2 Support</a></p>
+            <p><a href="/contribution.html">Contribution</a></p>
+            <p><a href="/documentation/dbconsole.html">dbconsole</a></p>
+          </div>
+        </div>
+        <div class="col-xs-10">
+          <div class="content">
+<a href="https://github.com/scalikejdbc/scalikejdbc"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+            <h1>ScalikeJDBC</h1>
+
+<hr/>
+
+<h2>Just write SQL and get things done!</h2>
+
+<p>ScalikeJDBC is a tidy SQL-based DB access library for Scala developers.
+This library naturally wraps JDBC APIs and provides you easy-to-use APIs.
+ScalikeJDBC is a practical and production-ready one. Use this library for your real projects.</p>
+
+<hr/>
+
+<h2>Getting Started</h2>
+
+<p>All you need to do is just adding ScalikeJDBC, JDBC driver &amp; slf4j implementation. </p>
+<pre class="highlight text">libraryDependencies ++= Seq(
+  &quot;com.github.seratch&quot; %% &quot;scalikejdbc&quot;               % &quot;[1.6,)&quot;,
+  &quot;com.github.seratch&quot; %% &quot;scalikejdbc-interpolation&quot; % &quot;[1.6,)&quot;,
+  &quot;com.h2database&quot;     %  &quot;h2&quot;                        % &quot;[1.3,)&quot;,
+  &quot;ch.qos.logback&quot;     %  &quot;logback-classic&quot;           % &quot;[1.0,)&quot;
+)
+</pre>
+<h4>First example</h4>
+
+<p>Put above dependencies into your <code>build.sbt</code> and run <code>sbt console</code> now.</p>
+<pre class="highlight java"><span class="kn">import</span> <span class="nn">scalikejdbc._</span><span class="o">,</span> <span class="n">SQLInterpolation</span><span class="o">.</span><span class="na">_</span>
+
+<span class="c1">// initialize JDBC driver &amp; connection pool</span>
+<span class="n">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">&quot;org.h2.Driver&quot;</span><span class="o">)</span>
+<span class="n">ConnectionPool</span><span class="o">.</span><span class="na">singleton</span><span class="o">(</span><span class="s">&quot;jdbc:h2:mem:hello&quot;</span><span class="o">,</span> <span class="s">&quot;user&quot;</span><span class="o">,</span> <span class="s">&quot;pass&quot;</span><span class="o">)</span>
+
+<span class="c1">// ad-hoc session provider on the REPL</span>
+<span class="n">implicit</span> <span class="n">val</span> <span class="n">session</span> <span class="o">=</span> <span class="n">AutoSession</span>
+
+<span class="c1">// table creation, you can run DDL by using #execute as same as JDBC</span>
+<span class="n">sql</span><span class="s">&quot;&quot;&quot;
+create table members (
+  id serial not null primary key, 
+  name varchar(64), 
+  created_at timestamp not null
+)
+&quot;&quot;&quot;</span><span class="o">.</span><span class="na">execute</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
+
+<span class="c1">// insert initial data</span>
+<span class="n">Seq</span><span class="o">(</span><span class="s">&quot;Alice&quot;</span><span class="o">,</span> <span class="s">&quot;Bob&quot;</span><span class="o">,</span> <span class="s">&quot;Chris&quot;</span><span class="o">)</span> <span class="n">foreach</span> <span class="o">{</span> <span class="n">name</span> <span class="o">=&gt;</span>
+  <span class="n">sql</span><span class="s">&quot;insert into members (name, created_at) values (${name}, current_timestamp)&quot;</span><span class="o">.</span><span class="na">update</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
+<span class="o">}</span>
+
+<span class="c1">// for now, retrieves all data as Map value </span>
+<span class="n">val</span> <span class="nl">entities:</span> <span class="n">List</span><span class="o">[</span><span class="n">Map</span><span class="o">[</span><span class="n">String</span><span class="o">,</span> <span class="n">Any</span><span class="o">]]</span> <span class="o">=</span> <span class="n">sql</span><span class="s">&quot;select * from members&quot;</span><span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">_</span><span class="o">.</span><span class="na">toMap</span><span class="o">).</span><span class="na">list</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
+
+<span class="c1">// defines entity object and extractor</span>
+<span class="kn">import</span> <span class="nn">org.joda.time._</span>
+<span class="k">case</span> <span class="kd">class</span> <span class="nf">Member</span><span class="p">(</span><span class="nl">id:</span> <span class="n">Long</span><span class="o">,</span> <span class="nl">name:</span> <span class="n">Option</span><span class="o">[</span><span class="n">String</span><span class="o">],</span> <span class="nl">createdAt:</span> <span class="n">DateTime</span><span class="o">)</span>
+<span class="n">object</span> <span class="n">Member</span> <span class="kd">extends</span> <span class="n">SQLSyntaxSupport</span><span class="o">[</span><span class="n">Member</span><span class="o">]</span> <span class="o">{</span>
+  <span class="n">override</span> <span class="n">val</span> <span class="n">tableName</span> <span class="o">=</span> <span class="s">&quot;members&quot;</span>
+  <span class="n">def</span> <span class="n">apply</span><span class="o">(</span><span class="nl">rs:</span> <span class="n">WrappedResultSet</span><span class="o">)</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Member</span><span class="o">(</span>
+    <span class="n">rs</span><span class="o">.</span><span class="na">long</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">),</span> <span class="n">rs</span><span class="o">.</span><span class="na">stringOpt</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">),</span> <span class="n">rs</span><span class="o">.</span><span class="na">dateTime</span><span class="o">(</span><span class="s">&quot;created_at&quot;</span><span class="o">))</span>
+<span class="o">}</span>
+
+<span class="c1">// find all members</span>
+<span class="n">val</span> <span class="nl">members:</span> <span class="n">List</span><span class="o">[</span><span class="n">Member</span><span class="o">]</span> <span class="o">=</span> <span class="n">sql</span><span class="s">&quot;select * from members&quot;</span><span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">rs</span> <span class="o">=&gt;</span> <span class="n">Member</span><span class="o">(</span><span class="n">rs</span><span class="o">)).</span><span class="na">list</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
+</pre>
+<p>How did it go? If you&rsquo;d like to know more details or practical examples, see documentation.</p>
+
+<h4>Typesafe Activator</h4>
+
+<p><img alt="Typesafe" src="/images/typesafe.png" /></p>
+
+<p>You can try a <a href="http://www.playframework.com/">Play framework</a> sample app which uses ScalikeJDBC on <a href="http://typesafe.com/activator">Typesafe Activator</a>.</p>
+
+<p>Activator page: <a href="http://typesafe.com/activator/template/scalikejdbc-activator-template">Hello ScalikeJDBC!</a></p>
+
+<p>See on GitHub: <a href="https://github.com/seratch/hello-scalikejdbc">seratch/hello-scalikejdbc</a></p>
+
+<hr/>
+
+<h2>ScalikeJDBC in 5 minutes</h2>
+
+<p>Here is a presentation for beginners which shows overview of ScalikeJDBC in 5 minutes.</p>
+
+<hr/>
+
+<div style="width: 50%">
+<script async class="speakerdeck-embed" data-id="5a0fa5b0b4df0130946402d040a74214" src="//speakerdeck.com/assets/embed.js"></script>
+</div>
+
+<hr/>
+
+<h2>Overview</h2>
+
+<hr/>
+
+<h3>JDBC is the standard SQL interface on the JVM</h3>
+
+<p>Whether you like it or not, JDBC is a stable standard interface. Since most of RDBMS supports JDBC interface, we can access RDBMS in the same way.</p>
+
+<p>We never release without passing all the unit tests with the following RDBMS.</p>
+
+<ul>
+<li>PostgreSQL</li>
+<li>MySQL</li>
+<li>H2 Database Engine</li>
+<li>HSQLDB</li>
+</ul>
+
+<p>We believe that ScalikeJDBC basically works with any other RDBMS (Oracle, SQL Server and so on).</p>
+
+<h4>Non-blocking?</h4>
+
+<p>Unfortunately, no. Indeed, JDBC drivers block on socket IO. So using them to talk with RDBMS in async event driven archetecture may not be appropriate. But actually most of real world applications don&rsquo;t need event-driven archetecture yet. JDBC is still important infrastructure for apps on the JVM.</p>
+
+<h4>Amazon Reshift, Facebook Presto and then&hellip;</h4>
+
+<p>If you can access some datastore via JDBC interface, that means you can access them via ScalikeJDBC too. Recently, <a href="http://docs.aws.amazon.com/redshift/latest/dg/c_redshift-postgres-jdbc.html">Amazon Redshift</a> and <a href="https://github.com/facebook/presto/tree/master/presto-jdbc">Facebook Presto</a> support JDBC interface. You can access them via ScalikeJDBC!</p>
+
+<hr/>
+
+<h3>Less dependencies</h3>
+
+<p>Core part of ScalikeJDBC has so less dependencies that you won&rsquo;t be bothered by dependency hell.</p>
+
+<ul>
+<li>JDBC Drivers that you need</li>
+<li>Commons DBCP</li>
+<li>Joda Time 2.x</li>
+<li>SLF4J API</li>
+</ul>
+
+<p>Of course, you can use c3p0 instead of commons-dbcp though ConnectionPool interface is available by default.</p>
+
+<hr/>
+
+<h3>Using only Scala standard API &amp; SQL</h3>
+
+<p>Library users don&rsquo;t need to learn so many library-specific rules or conventions. If you&rsquo;re already familiar with Scala&rsquo;s standard library APIs and basic SQLs, that much should be enough.</p>
+<pre class="highlight java"><span class="n">val</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Alice&quot;</span>
+<span class="c1">// implicit session represents java.sql.Connection</span>
+<span class="n">val</span> <span class="nl">memberId:</span> <span class="n">Option</span><span class="o">[</span><span class="n">Long</span><span class="o">]</span> <span class="o">=</span> <span class="n">DB</span> <span class="n">readOnly</span> <span class="o">{</span> <span class="n">implicit</span> <span class="n">session</span> <span class="o">=&gt;</span>
+  <span class="n">sql</span><span class="s">&quot;select id from members where name = ${name}&quot;</span> <span class="c1">// don't worry, prevents SQL injection</span>
+    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">rs</span> <span class="o">=&gt;</span> <span class="n">rs</span><span class="o">.</span><span class="na">long</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">))</span> <span class="c1">// extracts values from rich java.sql.ResultSet</span>
+    <span class="o">.</span><span class="na">single</span>                   <span class="c1">// single, list, traversable</span>
+    <span class="o">.</span><span class="na">apply</span><span class="o">()</span>                  <span class="c1">// Side effect!!! runs the SQL using Connection</span>
+<span class="o">}</span>
+</pre>
+<p>See in detail: <a href="/documentation/operations.html">/documentation/operations</a></p>
+
+<hr/>
+
+<h3>Type-safe DSL</h3>
+
+<p>Since version 1.6, QueryDSL is available. It&rsquo;s a SQL-like and type-safe DSL to build DRY SQLs.</p>
+
+<p>Here is an example:</p>
+<pre class="highlight java"><span class="n">val</span> <span class="o">(</span><span class="n">p</span><span class="o">,</span> <span class="n">c</span><span class="o">)</span> <span class="o">=</span> <span class="o">(</span><span class="n">Programmer</span><span class="o">.</span><span class="na">syntax</span><span class="o">(</span><span class="s">&quot;p&quot;</span><span class="o">),</span> <span class="n">Company</span><span class="o">.</span><span class="na">syntax</span><span class="o">(</span><span class="s">&quot;c&quot;</span><span class="o">))</span>
+
+<span class="n">val</span> <span class="nl">programmers:</span> <span class="n">List</span><span class="o">[</span><span class="n">Long</span><span class="o">]</span> <span class="o">=</span> <span class="n">DB</span> <span class="n">readOnly</span> <span class="o">{</span> <span class="n">implicit</span> <span class="n">session</span> <span class="o">=&gt;</span>
+  <span class="n">withSQL</span> <span class="o">{</span>
+    <span class="n">select</span>
+      <span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">Programmer</span> <span class="n">as</span> <span class="n">p</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">leftJoin</span><span class="o">(</span><span class="n">Company</span> <span class="n">as</span> <span class="n">c</span><span class="o">).</span><span class="na">on</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">companyId</span><span class="o">,</span> <span class="n">c</span><span class="o">.</span><span class="na">id</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">where</span><span class="o">.</span><span class="na">ne</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">isDeleted</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">orderBy</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">createdAt</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">limit</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">offset</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+  <span class="o">}.</span><span class="na">map</span><span class="o">(</span><span class="n">Programmer</span><span class="o">(</span><span class="n">p</span><span class="o">,</span> <span class="n">c</span><span class="o">)).</span><span class="na">list</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
+<span class="o">}</span>
+</pre>
+<p>See in detail: <a href="/documentation/query-dsl.html">/documentation/query-dsl</a></p>
+
+<p>Test code: <a href="https://github.com/seratch/scalikejdbc/blob/master/scalikejdbc-interpolation/src/test/scala/scalikejdbc/QueryInterfaceSpec.scala">src/test/scala/scalikejdbc/QueryInterfaceSpec.scala</a></p>
+
+<hr/>
+
+<h3>Flexible transaction control</h3>
+
+<p>ScalikeJDBC provides several APIs for session/transaction control.</p>
+
+<ul>
+<li>DB autoCommit { implicit session =&gt; &hellip; }</li>
+<li>DB localTx { implicit session =&gt; &hellip; }</li>
+<li>DB withinTx { implicit session =&gt; &hellip; }</li>
+<li>DB readOnly { implicit session =&gt; &hellip; }</li>
+</ul>
+
+<p>Here is an example code which re-use methods in both of simple invocation and transactional operations.</p>
+<pre class="highlight java"><span class="n">object</span> <span class="n">Product</span> <span class="o">{</span>
+  <span class="n">def</span> <span class="n">create</span><span class="o">(</span><span class="nl">name:</span> <span class="n">String</span><span class="o">,</span> <span class="nl">price:</span> <span class="n">Long</span><span class="o">)(</span><span class="n">implicit</span> <span class="nl">s:</span> <span class="n">DBSession</span> <span class="o">=</span> <span class="n">AutoSession</span><span class="o">):</span> <span class="n">Long</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">sql</span><span class="s">&quot;insert into products values (${name}, ${price})&quot;</span>
+      <span class="o">.</span><span class="na">updateAndReturnGeneratedKey</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span> <span class="c1">// returns auto-incremeneted id</span>
+  <span class="o">}</span>
+
+  <span class="n">def</span> <span class="n">findById</span><span class="o">(</span><span class="nl">id:</span> <span class="n">Long</span><span class="o">)(</span><span class="n">implicit</span> <span class="nl">s:</span> <span class="n">DBSession</span> <span class="o">=</span> <span class="n">AutoSession</span><span class="o">):</span> <span class="n">Option</span><span class="o">[</span><span class="n">Product</span><span class="o">]</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">sql</span><span class="s">&quot;select id, name, price, created_at from products where id = ${id}&quot;</span>
+      <span class="o">.</span><span class="na">map</span> <span class="o">{</span> <span class="n">rs</span> <span class="o">=&gt;</span> <span class="n">Product</span><span class="o">(</span><span class="n">rs</span><span class="o">)</span> <span class="o">}.</span><span class="na">single</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="n">Product</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="mi">123</span><span class="o">)</span> <span class="c1">// borrows connection from pool and gives it back after execution</span>
+
+<span class="n">DB</span> <span class="n">localTx</span> <span class="o">{</span> <span class="n">implicit</span> <span class="n">session</span> <span class="o">=&gt;</span> <span class="c1">// transactional session</span>
+  <span class="n">val</span> <span class="n">id</span> <span class="o">=</span> <span class="n">Product</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">&quot;ScalikeJDBC Cookbook&quot;</span><span class="o">,</span> <span class="mi">200</span><span class="o">)</span> <span class="c1">// within transaction</span>
+  <span class="n">val</span> <span class="n">product</span> <span class="o">=</span> <span class="n">Product</span><span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="n">id</span><span class="o">)</span> <span class="c1">// within transaction</span>
+<span class="o">}</span>
+</pre>
+<p>See in detail: <a href="/documentation/transaction.html">/documentation/transaction</a></p>
+
+<hr/>
+
+<h3>Useful Query Inspections</h3>
+
+<p>By default, ScalikeJDBC shows you what SQL is executed and where it is. We believe that is quite useful for debugging your apps. Logging only slow queries in production also helps you.</p>
+<pre class="highlight text">[debug] s.StatementExecutor$$anon$1 - SQL execution completed
+
+  [Executed SQL]
+   select id, name from users where email = 'alice@example.com'; (3 ms)
+
+  [Stack Trace]
+    ...
+    models.User$.findByEmail(User.scala:26)
+    controllers.Projects$$anonfun$index$1$$anonfun$apply$1$$anonfun$apply$2.apply(Projects.scala:20)
+    controllers.Projects$$anonfun$index$1$$anonfun$apply$1$$anonfun$apply$2.apply(Projects.scala:19)
+    controllers.Secured$$anonfun$IsAuthenticated$3$$anonfun$apply$3.apply(Application.scala:88)
+</pre>
+<p>See in detail: <a href="/documentation/query-inspector.html">/documentation/query-inspector</a></p>
+
+<hr/>
+
+<h3>Testing Support</h3>
+
+<p>Testing support which provides the following functionalities for <a href="http://www.scalatest.org/">ScalaTest</a> and <a href="http://etorreborre.github.io/specs2/">specs2</a>.</p>
+
+<ul>
+<li>Rollback automatically after each test</li>
+<li>Testing with fixtures</li>
+</ul>
+
+<p>See in detail: <a href="/documentation/testing.html">/documentation/testing</a></p>
+
+<hr/>
+
+<h3>Reverse Engineering</h3>
+
+<p>You can easily get Scala code from existing database by using ScalikeJDBC&rsquo;s reverse engineering tool.</p>
+<pre class="highlight text">sbt &quot;scalikejdbc-gen [table-name (class-name)]&quot;
+</pre>
+<p>e.g.</p>
+<pre class="highlight text">sbt &quot;scalikejdbc-gen company&quot;
+sbt &quot;scalikejdbc-gen companies Company&quot;
+</pre>
+<p>See in detail: <a href="/documentation/reverse-engineering.html">/documentation/reverse-engineering</a></p>
+
+<hr/>
+
+<h3>Play Framework Support</h3>
+
+<p><img alt="Play framework" src="/images/play.png" /></p>
+
+<p>You can use ScalikeJDBC with Play framework 2 seamlessly. We promise you that it becomes more productive when using together with scalikejdbc-mapper-generator.</p>
+
+<p>See in detail: <a href="/documentation/playframework-support.html">/documentation/playframework-support</a></p>
+
+<hr/>
+
+<h2>License</h2>
+
+<p>Published binary files have the following copyright:</p>
+<pre class="highlight text">Copyright 2013 ScalikeJDBC committers
+Apache License, Version 2.0
+http://www.apache.org/licenses/LICENSE-2.0.html
+</pre>
+<hr/>
+
+<h2>Related Products</h2>
+
+<hr/>
+
+<h3>ScalikeJDBC-Async</h3>
+
+<p>ScalikeJDBC Extension: Non-blocking APIs in the JDBC way.</p>
+
+<p><a href="https://github.com/scalikejdbc/scalikejdbc-async">github.com/scalikejdbc/scalikejdbc-async</a></p>
+
+<p>ScalikeJDBC-Async provides non-blocking APIs to talk with PostgreSQL and MySQL in the JDBC way.</p>
+
+<p>This library is built with <a href="https://github.com/mauricio/postgresql-async">postgrsql-async and mysql-async</a>,incredible works by @mauricio.</p>
+
+<hr/>
+
+<h3>dbconsole</h3>
+
+<p>dbconsole is an extended sbt console to connect database. </p>
+
+<h4>Mac OS X, Linux</h4>
+<pre class="highlight shell">curl -L http://git.io/dbconsole | sh
+</pre>
+<h4>Windows</h4>
+<pre class="highlight text">http://git.io/dbconsole.bat
+</pre>
+<p>See in detail: <a href="/documentation/dbconsole.html">/documentation/dbconsole</a></p>
+
+<hr/>
+
+<h3>Skinny ORM</h3>
+
+<p><img alt="Skinny framework" src="/images/skinny.png" /></p>
+
+<p>Skinny ORM is the default DB access library of <a href="https://github.com/skinny-framework/skinny-framework">Skinny Framework</a>. Skinny ORM is built upon ScalikeJDBC. </p>
+
+<p>In most cases, ORM makes things easier.</p>
+
+<p><a href="https://github.com/skinny-framework/skinny-framework#orm">https://github.com/skinny-framework/skinny-framework#orm</a></p>
+
+            <hr/>
+            <div class="alert alert-info small"> 
+              If this webpage has typo or something wrong, Please report or fix. <a href="/contribution.html">How?</a>
+            </div> 
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+  </body>
+</html>
+

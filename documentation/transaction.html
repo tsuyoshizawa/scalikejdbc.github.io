@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <!-- Use title if it's in the page YAML frontmatter -->
+    <title>Transaction - ScalikeJDBC</title>
+    <script type="text/javascript" src="//codeorigin.jquery.com/jquery-1.10.2.min.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css"/>
+    <link href="/stylesheets/all.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/all.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+    <div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/"><img src="/images/logo_small.png" /></a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="/documentation" class="dropdown-toggle" data-toggle="dropdown">Documentation&nbsp;<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="/documentation/setup.html">Setup</a></li>
+                <li><a href="/documentation/configuration.html">Configuration</a></li>
+                <li><a href="/documentation/connection-pool.html">Connection Pool</a></li>
+                <li><a href="/documentation/operations.html">Operations</a></li>
+                <li><a href="/documentation/transaction.html">Transaction</a></li>
+                <li><a href="/documentation/auto-session.html">Auto Session</a></li>
+                <li><a href="/documentation/sql-interpolation.html">SQLInterpolation</a></li>
+                <li><a href="/documentation/query-dsl.html">QueryDSL</a></li>
+                <li><a href="/documentation/one-to-x.html">One-to-x API</a></li>
+                <li><a href="/documentation/query-inspector.html">Query Inspector</a></li>
+                <li><a href="/documentation/reverse-engineering.html">Reverse Engineering</a></li>
+                <li><a href="/documentation/testing.html">Testing</a></li>
+                <li><a href="/documentation/playframework-support.html">Play2 Support</a></li>
+                <li><a href="/contribution.html">Contribution</a></li>
+                <li><a href="/documentation/dbconsole.html">dbconsole</a></li>
+              </ul>
+            </li>
+            <li><a href="https://groups.google.com/group/scalikejdbc-users-group">Users Group</a></li>
+            <li><a href="https://github.com/scalikejdbc/scalikejdbc">Source</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+        <div class="col-xs-2">
+          <div class="content small">
+            <h5>Documentation</h5>
+            <hr/>
+            <p><a href="/documentation/setup.html">Setup</a></p>
+            <p><a href="/documentation/configuration.html">Configuration</a></p>
+            <p><a href="/documentation/connection-pool.html">Connection Pool</a></p>
+            <p><a href="/documentation/operations.html">Operations</a></p>
+            <p><a href="/documentation/transaction.html">Transaction</a></p>
+            <p><a href="/documentation/auto-session.html">Auto Session</a></p>
+            <p><a href="/documentation/sql-interpolation.html">SQLInterpolation</a></p>
+            <p><a href="/documentation/query-dsl.html">QueryDSL</a></p>
+            <p><a href="/documentation/one-to-x.html">One-to-x API</a></p>
+            <p><a href="/documentation/query-inspector.html">Query Inspector</a></p>
+            <p><a href="/documentation/reverse-engineering.html">Reverse Engineering</a></p>
+            <p><a href="/documentation/testing.html">Testing</a></p>
+            <p><a href="/documentation/playframework-support.html">Play2 Support</a></p>
+            <p><a href="/contribution.html">Contribution</a></p>
+            <p><a href="/documentation/dbconsole.html">dbconsole</a></p>
+          </div>
+        </div>
+        <div class="col-xs-10">
+          <div class="content">
+<a href="https://github.com/scalikejdbc/scalikejdbc"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+            <h2>Transaction</h2>
+
+<hr/>
+
+<h3>#readOnly block / session</h3>
+
+<p>Executes query in read-only mode.</p>
+<pre class="highlight java"><span class="n">val</span> <span class="n">names</span> <span class="o">=</span> <span class="n">DB</span> <span class="n">readOnly</span> <span class="o">{</span> <span class="n">implicit</span> <span class="n">session</span> <span class="o">=&gt;</span>
+  <span class="n">sql</span><span class="s">&quot;select name from emp&quot;</span><span class="o">.</span><span class="na">map</span> <span class="o">{</span> <span class="n">rs</span> <span class="o">=&gt;</span> <span class="n">rs</span><span class="o">.</span><span class="na">string</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span> <span class="o">}.</span><span class="na">list</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
+<span class="o">}</span>
+
+<span class="n">val</span> <span class="n">session</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">readOnlySession</span>
+<span class="k">try</span> <span class="o">{</span>
+  <span class="n">val</span> <span class="n">names</span> <span class="o">=</span> <span class="n">sql</span><span class="s">&quot;select name from emp&quot;</span><span class="o">).</span><span class="na">map</span> <span class="o">{</span> <span class="n">rs</span> <span class="o">=&gt;</span> <span class="n">rs</span><span class="o">.</span><span class="na">string</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span> <span class="o">}.</span><span class="na">list</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
+  <span class="c1">// do something</span>
+<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+  <span class="n">session</span><span class="o">.</span><span class="na">close</span><span class="o">()</span>
+<span class="o">}</span>
+</pre>
+<p>Of course, <code>update</code> operations in read-only mode will cause <code>java.sql.SQLException</code>.</p>
+<pre class="highlight java"><span class="n">DB</span> <span class="n">readOnly</span> <span class="o">{</span> <span class="n">implicit</span> <span class="n">session</span> <span class="o">=&gt;</span>
+  <span class="n">sql</span><span class="s">&quot;update emp set name = ${name} where id = ${id}&quot;</span><span class="o">).</span><span class="na">update</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
+<span class="o">}</span> <span class="c1">// will throw java.sql.SQLException</span>
+</pre>
+<hr/>
+
+<h3>#autoCommit block / session</h3>
+
+<p>Executes query / update in auto-commit mode.</p>
+<pre class="highlight java"><span class="n">val</span> <span class="n">count</span> <span class="o">=</span> <span class="n">DB</span> <span class="n">autoCommit</span> <span class="o">{</span> <span class="n">implicit</span> <span class="n">session</span> <span class="o">=&gt;</span>
+  <span class="n">sql</span><span class="s">&quot;update emp set name = ${name} where id = ${id}&quot;</span><span class="o">).</span><span class="na">update</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
+<span class="o">}</span>
+</pre>
+<p>When using autoCommitSession, every operation will be executed in auto-commit mode.</p>
+<pre class="highlight java"><span class="n">implicit</span> <span class="n">val</span> <span class="n">session</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">autoCommitSession</span>
+<span class="k">try</span> <span class="o">{</span>
+  <span class="n">sql</span><span class="s">&quot;update emp set name = ${name1} where id = ${id1}&quot;</span><span class="o">).</span><span class="na">update</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span> <span class="c1">// auto-commit</span>
+  <span class="n">sql</span><span class="s">&quot;update emp set name = ${name2} where id = ${id2}&quot;</span><span class="o">).</span><span class="na">update</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span> <span class="c1">// auto-commit</span>
+<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span> <span class="n">session</span><span class="o">.</span><span class="na">close</span><span class="o">()</span> <span class="o">}</span>
+</pre>
+<hr/>
+
+<h3>#localTx block</h3>
+
+<p>Executes query / update in block-scoped transactions.</p>
+
+<p>If an Exception was thrown in the block, the transaction will perform rollback automatically.</p>
+<pre class="highlight java"><span class="n">val</span> <span class="n">count</span> <span class="o">=</span> <span class="n">DB</span> <span class="n">localTx</span> <span class="o">{</span> <span class="n">implicit</span> <span class="n">session</span> <span class="o">=&gt;</span>
+  <span class="c1">// --- transcation scope start ---</span>
+  <span class="n">sql</span><span class="s">&quot;update emp set name = ${name1} where id = ${id1}&quot;</span><span class="o">.</span><span class="na">update</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
+  <span class="n">sql</span><span class="s">&quot;update emp set name = ${name2} where id = ${id2}&quot;</span><span class="o">.</span><span class="na">update</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
+  <span class="c1">// --- transaction scope end ---</span>
+<span class="o">}</span>
+</pre>
+<hr/>
+
+<h3>#withinTx block / session</h3>
+
+<p>Executes query / update in already existing transactions.
+In this case, all the transactional operations (such as <code>Tx#begin()</code>, <code>Tx#rollback()</code> or <code>Tx#commit()</code>) should be managed by users of ScalikeJDBC.</p>
+<pre class="highlight java"><span class="n">val</span> <span class="n">db</span> <span class="o">=</span> <span class="n">DB</span><span class="o">(</span><span class="n">conn</span><span class="o">)</span>
+<span class="k">try</span> <span class="o">{</span>
+  <span class="n">db</span><span class="o">.</span><span class="na">begin</span><span class="o">()</span>
+  <span class="n">val</span> <span class="n">names</span> <span class="o">=</span> <span class="n">db</span> <span class="n">withinTx</span> <span class="o">{</span> <span class="n">implicit</span> <span class="n">session</span> <span class="o">=&gt;</span>
+    <span class="c1">// if a transaction has not been started, IllegalStateException will be thrown</span>
+    <span class="n">sql</span><span class="s">&quot;select name from emp&quot;</span><span class="o">.</span><span class="na">map</span> <span class="o">{</span> <span class="n">rs</span> <span class="o">=&gt;</span> <span class="n">rs</span><span class="o">.</span><span class="na">string</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span> <span class="o">}.</span><span class="na">list</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
+  <span class="o">}</span>
+  <span class="n">db</span><span class="o">.</span><span class="na">rollback</span><span class="o">()</span> <span class="c1">// it might throw Exception</span>
+<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span> <span class="n">db</span><span class="o">.</span><span class="na">close</span><span class="o">()</span> <span class="o">}</span>
+
+<span class="n">val</span> <span class="n">db</span> <span class="o">=</span> <span class="n">DB</span><span class="o">(</span><span class="n">conn</span><span class="o">)</span>
+<span class="k">try</span> <span class="o">{</span>
+  <span class="n">db</span><span class="o">.</span><span class="na">begin</span><span class="o">()</span>
+  <span class="n">implicit</span> <span class="n">val</span> <span class="n">session</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="na">withinTxSession</span><span class="o">()</span>
+  <span class="n">val</span> <span class="n">names</span> <span class="o">=</span> <span class="n">sql</span><span class="s">&quot;select name from emp&quot;</span><span class="o">.</span><span class="na">map</span> <span class="o">{</span> <span class="n">rs</span> <span class="o">=&gt;</span> <span class="n">rs</span><span class="o">.</span><span class="na">string</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span> <span class="o">}.</span><span class="na">list</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
+  <span class="n">db</span><span class="o">.</span><span class="na">rollbackIfActive</span><span class="o">()</span> <span class="c1">// it NEVER throws Exception</span>
+<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span> <span class="n">db</span><span class="o">.</span><span class="na">close</span><span class="o">()</span> <span class="o">}</span>
+</pre>
+            <hr/>
+            <div class="alert alert-info small"> 
+              If this webpage has typo or something wrong, Please report or fix. <a href="/contribution.html">How?</a>
+            </div> 
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+  </body>
+</html>
+

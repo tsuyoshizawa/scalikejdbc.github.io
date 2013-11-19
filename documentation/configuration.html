@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <!-- Use title if it's in the page YAML frontmatter -->
+    <title>Configuration - ScalikeJDBC</title>
+    <script type="text/javascript" src="//codeorigin.jquery.com/jquery-1.10.2.min.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css"/>
+    <link href="/stylesheets/all.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/all.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+    <div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/"><img src="/images/logo_small.png" /></a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="/documentation" class="dropdown-toggle" data-toggle="dropdown">Documentation&nbsp;<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="/documentation/setup.html">Setup</a></li>
+                <li><a href="/documentation/configuration.html">Configuration</a></li>
+                <li><a href="/documentation/connection-pool.html">Connection Pool</a></li>
+                <li><a href="/documentation/operations.html">Operations</a></li>
+                <li><a href="/documentation/transaction.html">Transaction</a></li>
+                <li><a href="/documentation/auto-session.html">Auto Session</a></li>
+                <li><a href="/documentation/sql-interpolation.html">SQLInterpolation</a></li>
+                <li><a href="/documentation/query-dsl.html">QueryDSL</a></li>
+                <li><a href="/documentation/one-to-x.html">One-to-x API</a></li>
+                <li><a href="/documentation/query-inspector.html">Query Inspector</a></li>
+                <li><a href="/documentation/reverse-engineering.html">Reverse Engineering</a></li>
+                <li><a href="/documentation/testing.html">Testing</a></li>
+                <li><a href="/documentation/playframework-support.html">Play2 Support</a></li>
+                <li><a href="/contribution.html">Contribution</a></li>
+                <li><a href="/documentation/dbconsole.html">dbconsole</a></li>
+              </ul>
+            </li>
+            <li><a href="https://groups.google.com/group/scalikejdbc-users-group">Users Group</a></li>
+            <li><a href="https://github.com/scalikejdbc/scalikejdbc">Source</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+        <div class="col-xs-2">
+          <div class="content small">
+            <h5>Documentation</h5>
+            <hr/>
+            <p><a href="/documentation/setup.html">Setup</a></p>
+            <p><a href="/documentation/configuration.html">Configuration</a></p>
+            <p><a href="/documentation/connection-pool.html">Connection Pool</a></p>
+            <p><a href="/documentation/operations.html">Operations</a></p>
+            <p><a href="/documentation/transaction.html">Transaction</a></p>
+            <p><a href="/documentation/auto-session.html">Auto Session</a></p>
+            <p><a href="/documentation/sql-interpolation.html">SQLInterpolation</a></p>
+            <p><a href="/documentation/query-dsl.html">QueryDSL</a></p>
+            <p><a href="/documentation/one-to-x.html">One-to-x API</a></p>
+            <p><a href="/documentation/query-inspector.html">Query Inspector</a></p>
+            <p><a href="/documentation/reverse-engineering.html">Reverse Engineering</a></p>
+            <p><a href="/documentation/testing.html">Testing</a></p>
+            <p><a href="/documentation/playframework-support.html">Play2 Support</a></p>
+            <p><a href="/contribution.html">Contribution</a></p>
+            <p><a href="/documentation/dbconsole.html">dbconsole</a></p>
+          </div>
+        </div>
+        <div class="col-xs-10">
+          <div class="content">
+<a href="https://github.com/scalikejdbc/scalikejdbc"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+            <h2>Configuration</h2>
+
+<hr/>
+
+<p>The following 3 things should be configured.</p>
+
+<hr/>
+
+<h3>JDBC Driver</h3>
+
+<p>In advance, JDBC drivers must be loaded by using</p>
+<pre class="highlight text">Class.forName(String)
+</pre>
+<p>or</p>
+<pre class="highlight text">java.sql.DriverManager.registerDriver(java.sql.Driver)
+</pre>
+<p>If you use <code>scalikejdbc-config</code> or <code>scalikejdbc-play-plugin</code>, they do the legacy work for you.</p>
+
+<hr/>
+
+<h3>Connection Pool Settings</h3>
+
+<p>ConnectionPool should be initialized on startu.</p>
+<pre class="highlight java"><span class="kn">import</span> <span class="nn">scalikejdbc._</span>
+
+<span class="c1">// after loading JDBC drivers</span>
+<span class="n">ConnectionPool</span><span class="o">.</span><span class="na">singleton</span><span class="o">(</span><span class="n">url</span><span class="o">,</span> <span class="n">user</span><span class="o">,</span> <span class="n">password</span><span class="o">)</span>
+<span class="n">ConnectionPool</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="err">'</span><span class="n">foo</span><span class="o">,</span> <span class="n">user</span><span class="o">,</span> <span class="n">password</span><span class="o">)</span>
+
+<span class="n">val</span> <span class="n">settings</span> <span class="o">=</span> <span class="n">ConnectionPoolSettings</span><span class="o">(</span>
+  <span class="n">initialSize</span> <span class="o">=</span> <span class="mi">5</span><span class="o">,</span>
+  <span class="n">maxSize</span> <span class="o">=</span> <span class="mi">20</span><span class="o">,</span>
+  <span class="n">connectionTimeoutMillis</span> <span class="o">=</span> <span class="mi">3000L</span><span class="o">,</span>
+  <span class="n">validationQuery</span> <span class="o">=</span> <span class="s">&quot;select 1 from dual&quot;</span><span class="o">)</span>
+
+<span class="c1">// all the connections are released, old connection pool will be abandoned</span>
+<span class="n">ConnectionPool</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="err">'</span><span class="n">foo</span><span class="o">,</span> <span class="n">user</span><span class="o">,</span> <span class="n">password</span><span class="o">,</span> <span class="n">settings</span><span class="o">)</span>
+</pre>
+<p><code>ConnectionPool</code> and <code>ConnectionPoolSettings</code>&rsquo;s parameters are like this:</p>
+<pre class="highlight java"><span class="kd">abstract</span> <span class="kd">class</span> <span class="nf">ConnectionPool</span><span class="p">(</span>
+  <span class="n">val</span> <span class="nl">url:</span> <span class="n">String</span><span class="o">,</span>
+  <span class="n">val</span> <span class="nl">user:</span> <span class="n">String</span><span class="o">,</span>
+  <span class="nl">password:</span> <span class="n">String</span><span class="o">,</span>
+  <span class="n">val</span> <span class="nl">settings:</span> <span class="n">ConnectionPoolSettings</span><span class="o">)</span>
+</pre><pre class="highlight java"><span class="k">case</span> <span class="kd">class</span> <span class="nf">ConnectionPoolSettings</span><span class="p">(</span>
+  <span class="nl">initialSize:</span> <span class="n">Int</span><span class="o">,</span>
+  <span class="nl">maxSize:</span> <span class="n">Int</span><span class="o">,</span>
+  <span class="nl">connectionTimeoutMillis:</span> <span class="n">Long</span><span class="o">,</span>
+  <span class="nl">validationQuery:</span> <span class="n">String</span><span class="o">)</span>
+</pre>
+<p>FYI: <a href="https://github.com/seratch/scalikejdbc/blob/master/scalikejdbc-library/src/main/scala/scalikejdbc/ConnectionPool.scala">Source Code</a></p>
+
+<hr/>
+
+<h3>Global Settings</h3>
+
+<p>Global settings for logging for query inspection and so on.</p>
+<pre class="highlight java"><span class="n">object</span> <span class="n">GlobalSettings</span> <span class="o">{</span>
+  <span class="n">var</span> <span class="nl">loggingSQLErrors:</span> <span class="n">Boolean</span>
+  <span class="n">var</span> <span class="nl">loggingSQLAndTime:</span> <span class="n">LoggingSQLAndTimeSettings</span>
+  <span class="n">var</span> <span class="nl">sqlFormatter:</span> <span class="n">SQLFormatterSettings</span>
+  <span class="n">var</span> <span class="nl">nameBindingSQLValidator:</span> <span class="n">NameBindingSQLValidatorSettings</span>
+  <span class="n">var</span> <span class="nl">queryCompletionListener:</span> <span class="o">(</span><span class="n">String</span><span class="o">,</span> <span class="n">Seq</span><span class="o">[</span><span class="n">Any</span><span class="o">],</span> <span class="n">Long</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">Unit</span>
+  <span class="n">var</span> <span class="nl">queryFailureListener:</span> <span class="o">(</span><span class="n">String</span><span class="o">,</span> <span class="n">Seq</span><span class="o">[</span><span class="n">Any</span><span class="o">],</span> <span class="n">Throwable</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">Unit</span>
+<span class="o">}</span>
+</pre>
+<p>FYI: <a href="https://github.com/seratch/scalikejdbc/blob/master/scalikejdbc-library/src/main/scala/scalikejdbc/GlobalSettings.scala">Source Code</a></p>
+
+<hr/>
+
+<h3>Using scalikejdbc-config</h3>
+
+<p>If you use <code>scalikejdbc-config</code> which is an easy-to-use configuration loader for ScalikeJDBC which reads typesafe config, configuration is much simple.</p>
+
+<p><a href="https://github.com/typesafehub/config">Typesafe Config</a></p>
+
+<p>If you&rsquo;d like to setup <code>scalikejdbc-config</code>, see setup page.</p>
+
+<p><a href="/documentation/setup.html">/documentation/setup</a></p>
+
+<p>Configuration file should be like <code>src/main/resources/application.conf</code>. See Typesafe Config documentation in detail.</p>
+<pre class="highlight text"># JDBC settings
+db.default.driver=&quot;org.h2.Driver&quot;
+db.default.url=&quot;jdbc:h2:file:db/default&quot;
+db.default.user=&quot;sa&quot;
+db.default.password=&quot;&quot;
+# Connection Pool settings
+db.default.poolInitialSize=10
+db.default.poolMaxSize=20
+db.default.connectionTimeoutMillis=1000
+
+db.legacy.driver=&quot;org.h2.Driver&quot;
+db.legacy.url=&quot;jdbc:h2:file:db/db2&quot;
+db.legacy.user=&quot;foo&quot;
+db.legacy.password=&quot;bar&quot;
+</pre>
+<p>After just calling <code>scalikejdbc.config.DBs.setupAll()</code>, Connection pools are prepared.</p>
+<pre class="highlight java"><span class="kn">import</span> <span class="nn">scalikejdbc._</span><span class="o">,</span> <span class="n">SQLInterpolation</span><span class="o">.</span><span class="na">_</span>
+<span class="kn">import</span> <span class="nn">scalikejdbc.config._</span>
+
+<span class="n">DBs</span><span class="o">.</span><span class="na">setupAll</span><span class="o">()</span>
+<span class="c1">// DBs.setup()</span>
+<span class="c1">// DBs.setup('legacy)</span>
+
+<span class="c1">// loaded from &quot;db.default.*&quot;</span>
+<span class="n">val</span> <span class="n">memberIds</span> <span class="o">=</span> <span class="n">DB</span> <span class="n">readOnly</span> <span class="o">{</span> <span class="n">implicit</span> <span class="n">session</span> <span class="o">=&gt;</span>
+  <span class="n">sql</span><span class="s">&quot;select id from members&quot;</span><span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">_</span><span class="o">.</span><span class="na">long</span><span class="o">(</span><span class="mi">1</span><span class="o">)).</span><span class="na">list</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
+<span class="o">}</span>
+<span class="c1">// loaded from &quot;db.legacy.*&quot;</span>
+<span class="n">val</span> <span class="n">legacyMemberIds</span> <span class="o">=</span> <span class="n">NamedDB</span><span class="o">(</span><span class="err">'</span><span class="n">legacy</span><span class="o">)</span> <span class="n">readOnly</span> <span class="o">{</span> <span class="n">implicit</span> <span class="n">session</span> <span class="o">=&gt;</span>
+  <span class="n">sql</span><span class="s">&quot;select id from members&quot;</span><span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">_</span><span class="o">.</span><span class="na">long</span><span class="o">(</span><span class="mi">1</span><span class="o">)).</span><span class="na">list</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
+<span class="o">}</span>
+
+<span class="c1">// wipes out ConnectionPool</span>
+<span class="n">DBs</span><span class="o">.</span><span class="na">closeAll</span><span class="o">()</span>
+</pre>
+<hr/>
+
+<h3>Using scalikejdbc-config with environment</h3>
+
+<p>It&rsquo;s also possible to add prefix(e.g. environment).</p>
+<pre class="highlight text">development.db.default.driver=&quot;org.h2.Driver&quot;
+development.db.default.url=&quot;jdbc:h2:file:db/default&quot;
+development.db.default.user=&quot;sa&quot;
+development.db.default.password=&quot;&quot;
+
+prod {
+  db {
+    sandbox {
+      driver=&quot;org.h2.Driver&quot;
+      url=&quot;jdbc:h2:file:are-you-sure-in-production&quot;
+      user=&quot;user&quot;
+      password=&quot;pass&quot;
+    }
+  }
+}
+</pre>
+<p>Use <code>DBsWithEnv</code> instead of <code>DBs</code>.</p>
+<pre class="highlight java"><span class="n">DBsWithEnv</span><span class="o">(</span><span class="s">&quot;development&quot;</span><span class="o">).</span><span class="na">setupAll</span><span class="o">()</span>
+<span class="n">DBsWithEnv</span><span class="o">(</span><span class="s">&quot;prod&quot;</span><span class="o">).</span><span class="na">setup</span><span class="o">(</span><span class="err">'</span><span class="n">sandbox</span><span class="o">)</span>
+</pre>
+<hr/>
+
+<h3>Using scalikejdbc-config for Global Settings</h3>
+
+<p>The following settings are available.</p>
+<pre class="highlight text"># Global settings
+scalikejdbc.global.loggingSQLAndTime.enabled=true
+scalikejdbc.global.loggingSQLAndTime.logLevel=info
+scalikejdbc.global.loggingSQLAndTime.warningEnabled=true
+scalikejdbc.global.loggingSQLAndTime.warningThresholdMillis=1000
+scalikejdbc.global.loggingSQLAndTime.warningLogLevel=warn
+</pre>
+            <hr/>
+            <div class="alert alert-info small"> 
+              If this webpage has typo or something wrong, Please report or fix. <a href="/contribution.html">How?</a>
+            </div> 
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+  </body>
+</html>
+
