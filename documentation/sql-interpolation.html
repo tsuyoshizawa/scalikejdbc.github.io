@@ -123,6 +123,10 @@
   <span class="c1">// If the table name is same as snake_case'd name of this companion object,</span>
   <span class="c1">// you don't need to specify tableName explicitly.</span>
   <span class="n">override</span> <span class="n">val</span> <span class="n">tableName</span> <span class="o">=</span> <span class="s">&quot;groups&quot;</span>
+
+  <span class="c1">// If you use NamedDB for this entity, override connectionPoolName</span>
+  <span class="c1">//override val connectionPoolName = 'anotherdb</span>
+
   <span class="n">def</span> <span class="n">apply</span><span class="o">(</span><span class="nl">g:</span> <span class="n">ResultName</span><span class="o">[</span><span class="n">Group</span><span class="o">])(</span><span class="nl">rs:</span> <span class="n">WrappedResultSet</span><span class="o">)</span> <span class="o">=</span>
     <span class="k">new</span> <span class="n">Group</span><span class="o">(</span><span class="n">rs</span><span class="o">.</span><span class="na">long</span><span class="o">(</span><span class="n">g</span><span class="o">.</span><span class="na">id</span><span class="o">),</span> <span class="n">rs</span><span class="o">.</span><span class="na">string</span><span class="o">(</span><span class="n">g</span><span class="o">.</span><span class="na">name</span><span class="o">))</span>
 <span class="o">}</span>
@@ -160,27 +164,31 @@
 </pre>
 <p>It seems to be natural that <code>${m.result.*}</code> is converted to listing all the columns, <code>${m.camelCase}</code> is converted to the <code>snake_case</code> column name. However, since you may have questions, I&rsquo;ll explain about some points.</p>
 
+<hr/>
+
 <h4>Why is ${m.result.*} transformed to listing all the columns?</h4>
 
 <p>In spite of column names are not defined anywhere, <code>${m.result.*}</code> is converted to listing all the column names. The secret is that laoding from metadata (and they will be cached) when first access to the table. It&rsquo;s possible to obtain all column names as a <code>Seq[String]</code> value via <code>columns</code>.</p>
 
 <p>If you need to define column names by yourself or need to access multi databases, please define column names as follows:</p>
 <pre class="highlight java"><span class="n">object</span> <span class="n">GroupMember</span> <span class="kd">extends</span> <span class="n">SQLSyntaxSupport</span><span class="o">[</span><span class="n">GroupMember</span><span class="o">]</span> <span class="o">{</span>
-  <span class="n">override</span> <span class="n">val</span> <span class="n">tableName</span> <span class="o">=</span> <span class="s">&quot;group_member&quot;</span>
+  <span class="n">override</span> <span class="n">val</span> <span class="n">tableName</span> <span class="o">=</span> <span class="s">&quot;groups_members&quot;</span>
   <span class="n">override</span> <span class="n">val</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">Seq</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;group_id&quot;</span><span class="o">)</span>
 <span class="o">}</span>
 </pre>
+<hr/>
+
 <h4>Why can we use undefined methods such as m.groupId?</h4>
 
 <p>By Type Dynamic (SIP-17) since Scala 2.10.0, you can call undefined methods such as <code>m.groupId</code>. Type Dynamic is similar to Ruby&rsquo;s method_missing.</p>
 
-<p>https://docs.google.com/document/d/1XaNgZ06AR7bXJA9-jHrAiBVUwqReqG4-av6beoLaf3U</p>
+<p><a href="https://docs.google.com/document/d/1XaNgZ06AR7bXJA9-jHrAiBVUwqReqG4-av6beoLaf3U">https://docs.google.com/document/d/1XaNgZ06AR7bXJA9-jHrAiBVUwqReqG4-av6beoLaf3U</a></p>
 
 <p>When you call camel case fields, it will actually be transformed to the column name as an underscore separated string. If the column name doesn&rsquo;t exist in the columns, <code>InvalidColumnNameException</code> will be thrown.</p>
 
 <p>Before that, the case case field name should be the same as any of the primary constructor arg names of type <code>A</code> of <code>SQLSyntaxSupport[A]</code>. The validation for this rule works in compilation phase with the power of Scala macros.</p>
 
-<p>http://docs.scala-lang.org/overviews/macros/overview.html</p>
+<p><a href="http://docs.scala-lang.org/overviews/macros/overview.html">http://docs.scala-lang.org/overviews/macros/overview.html</a></p>
 
 <p>If you don&rsquo;t want to use Type Dynamic, it&rsquo;s also possible to call <code>#field(String)</code> or <code>#column(String)</code> with String value. For instance, the following four examples mean the same thing.</p>
 <pre class="highlight java"><span class="n">m</span><span class="o">.</span><span class="na">groupId</span>
@@ -188,15 +196,19 @@
 <span class="n">m</span><span class="o">.</span><span class="na">column</span><span class="o">(</span><span class="s">&quot;group_id&quot;</span><span class="o">)</span>
 <span class="n">m</span><span class="o">.</span><span class="na">c</span><span class="o">(</span><span class="s">&quot;group_id&quot;</span><span class="o">)</span>
 </pre>
-<p>In some cases, you might want to avoid expose column names to application layer. If this is the case, override <code>nameConverters</code>. If you want to treat <code>service_cd</code> column as <code>serviceCode</code>, define that as follows. Since the <code>nameConverters</code> works as partial match retrieval, it&rsquo;s also possible to specify just <code>Map(&quot;Code&quot; -> &quot;cd&quot;)</code>.</p>
+<p>In some cases, you might want to avoid expose column names to application layer. If this is the case, override <code>nameConverters</code>. If you want to treat <code>service_cd</code> column as <code>serviceCode</code>, define regular expression and replaced name in columns as follows. Since the <code>nameConverters</code> works as partial match retrieval, it&rsquo;s also possible to specify just <code>Map(&quot;Code&quot; -> &quot;cd&quot;)</code>.</p>
 <pre class="highlight java"><span class="k">case</span> <span class="kd">class</span> <span class="nf">Event</span><span class="p">(</span><span class="nl">id:</span> <span class="n">Long</span><span class="o">,</span> <span class="nl">name:</span> <span class="n">String</span><span class="o">,</span> <span class="nl">serviceCode:</span> <span class="n">Long</span><span class="o">)</span>
 
 <span class="n">object</span> <span class="n">Event</span> <span class="kd">extends</span> <span class="n">SQLSyntaxSupport</span><span class="o">[</span><span class="n">Event</span><span class="o">]</span> <span class="o">{</span>
   <span class="n">override</span> <span class="n">val</span> <span class="n">tableName</span> <span class="o">=</span> <span class="s">&quot;events&quot;</span>
   <span class="n">override</span> <span class="n">val</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">Seq</span><span class="o">(</span><span class="s">&quot;id&quot;</span> <span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;service_cd&quot;</span><span class="o">)</span>
-  <span class="n">override</span> <span class="n">val</span> <span class="n">nameConverters</span> <span class="o">=</span> <span class="n">Map</span><span class="o">(</span><span class="s">&quot;serviceCode&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;service_cd&quot;</span><span class="o">)</span>
+
+  <span class="c1">// specify regular expression to match</span>
+  <span class="n">override</span> <span class="n">val</span> <span class="n">nameConverters</span> <span class="o">=</span> <span class="n">Map</span><span class="o">(</span><span class="s">&quot;^serviceCode$&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;service_cd&quot;</span><span class="o">)</span>
 <span class="o">}</span>
 </pre>
+<hr/>
+
 <h4>What is the difference between m.id, m.result.id and m.resultName.id?</h4>
 
 <p>For instance, <code>m</code>&rsquo;s APIs of <code>val m = Member.syntax(&quot;mm&quot;)</code> means as follows:</p>
@@ -245,6 +257,8 @@
             <div class="alert alert-info small"> 
               If this webpage has typo or something wrong, Please report or fix. <a href="/contribution.html">How?</a>
             </div> 
+<a href="https://twitter.com/ScalikeJDBC" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @ScalikeJDBC</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
           </div>
         </div>
       </div>
