@@ -199,7 +199,7 @@ create table members (
 <li>SLF4J API</li>
 </ul>
 
-<p>Of course, you can use c3p0 instead of commons-dbcp though ConnectionPool interface is available by default.</p>
+<p>Of course, you can use c3p0 (or others) instead of commons-dbcp though ConnectionPool implementation for that isn&rsquo;t provided by default.</p>
 
 <hr/>
 
@@ -231,7 +231,7 @@ create table members (
     <span class="n">select</span>
       <span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">Programmer</span> <span class="n">as</span> <span class="n">p</span><span class="o">)</span>
       <span class="o">.</span><span class="na">leftJoin</span><span class="o">(</span><span class="n">Company</span> <span class="n">as</span> <span class="n">c</span><span class="o">).</span><span class="na">on</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">companyId</span><span class="o">,</span> <span class="n">c</span><span class="o">.</span><span class="na">id</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">where</span><span class="o">.</span><span class="na">ne</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">isDeleted</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">where</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">isDeleted</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
       <span class="o">.</span><span class="na">orderBy</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">createdAt</span><span class="o">)</span>
       <span class="o">.</span><span class="na">limit</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
       <span class="o">.</span><span class="na">offset</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
