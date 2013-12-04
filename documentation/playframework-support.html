@@ -70,21 +70,21 @@
         <div class="col-xs-10">
           <div class="content">
 <a href="https://github.com/scalikejdbc/scalikejdbc"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
-            <h2>Play Framework Support</h2>
+            <h2 id="toc_0">Play Framework Support</h2>
 
 <hr/>
 
-<h3>How to setup</h3>
+<h3 id="toc_1">How to setup</h3>
 
 <p>See <a href="/documentation/setup.html">/documentation/setup</a>.</p>
 
 <hr/>
 
-<h3>Configuration</h3>
+<h3 id="toc_2">Configuration</h3>
 
 <p>Here is some configuration examples. Basically it&rsquo;s very simple:</p>
 
-<h4>conf/application.conf</h4>
+<h4 id="toc_3">conf/application.conf</h4>
 <pre class="highlight shell"><span class="c"># Database configuration</span>
 <span class="c"># ~~~~~</span>
 <span class="c"># You can declare as many datasources as you want.</span>
@@ -120,14 +120,14 @@ scalikejdbc.global.loggingSQLAndTime.warningLogLevel<span class="o">=</span>warn
 <span class="c"># scalikejdbc logging</span>
 logger.scalikejdbc<span class="o">=</span>DEBUG
 </pre>
-<h4>Fixtures</h4>
+<h4 id="toc_4">Fixtures</h4>
 
 <p>Fixtures are optional. If you don&rsquo;t nee, no need to use them.</p>
 
-<h5>conf/application.conf</h5>
+<h5 id="toc_5">conf/application.conf</h5>
 <pre class="highlight shell">db.default.fixtures.test<span class="o">=[</span> <span class="s2">&quot;project.sql&quot;</span>, <span class="s2">&quot;project_member.sql&quot;</span> <span class="o">]</span>
 </pre>
-<h5>conf/db/fixtures/default/project.sql</h5>
+<h5 id="toc_6">conf/db/fixtures/default/project.sql</h5>
 <pre class="highlight sql"><span class="o">#</span> <span class="c1">--- !Ups
 </span>
 <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">project</span> <span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">folder</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'Play 2.0'</span><span class="p">,</span> <span class="s1">'Play framework'</span><span class="p">);</span>
@@ -147,7 +147,7 @@ logger.scalikejdbc<span class="o">=</span>DEBUG
 </span><span class="k">ALTER</span> <span class="n">SEQUENCE</span> <span class="n">project_seq</span> <span class="k">RESTART</span> <span class="k">WITH</span> <span class="mi">1</span><span class="p">;</span>
 <span class="k">DELETE</span> <span class="k">FROM</span> <span class="n">project</span><span class="p">;</span>
 </pre>
-<h5>conf/db/fixtures/defaut/project_member.sql</h5>
+<h5 id="toc_7">conf/db/fixtures/defaut/project_member.sql</h5>
 <pre class="highlight sql"><span class="o">#</span> <span class="c1">--- !Ups
 </span>
 <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">project_member</span> <span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">user_email</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'guillaume@sample.com'</span><span class="p">);</span>
@@ -177,7 +177,7 @@ logger.scalikejdbc<span class="o">=</span>DEBUG
 </pre>
 <hr/>
 
-<h3>More Examples</h3>
+<h3 id="toc_8">More Examples</h3>
 
 <p>Take a look at Typesafe Activator template:</p>
 

@@ -70,7 +70,7 @@
         <div class="col-xs-10">
           <div class="content">
 <a href="https://github.com/scalikejdbc/scalikejdbc"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
-            <h2>Setup</h2>
+            <h2 id="toc_0">Setup</h2>
 
 <hr/>
 
@@ -80,7 +80,7 @@
 
 <hr/>
 
-<h3>Core Library &amp; Interpolation</h3>
+<h3 id="toc_1">Core Library &amp; Interpolation</h3>
 
 <p>Add latest version into your <code>build.sbt</code> or <code>project/Build.scala</code>. Don&rsquo;t forget JDBC driver and slf4j implementation.</p>
 
@@ -97,7 +97,7 @@
 </pre>
 <hr/>
 
-<h3>Testing Support</h3>
+<h3 id="toc_2">Testing Support</h3>
 
 <p>Using <code>scalikejdbc-test</code> is highly recommended to improve your application.</p>
 <pre class="highlight text">libraryDependencies ++= Seq(
@@ -112,7 +112,7 @@
 
 <hr/>
 
-<h3>Typesafe Config Reader</h3>
+<h3 id="toc_3">Typesafe Config Reader</h3>
 
 <p>If you use <code>application.conf</code> as settings file, add <code>scalikejdbc-config</code> too.</p>
 <pre class="highlight text">libraryDependencies ++= Seq(
@@ -127,21 +127,21 @@
 
 <hr/>
 
-<h3>Reverse Engineering</h3>
+<h3 id="toc_4">Reverse Engineering</h3>
 
 <p>ScalikeJDBC support reverse engineering Scala code from existing database.
 You need to setup an sbt plugin named <code>scalikejdbc-mapper-generator</code>.</p>
 
-<h5>project/plugins.sbt</h5>
+<h5 id="toc_5">project/plugins.sbt</h5>
 <pre class="highlight text">// Don't forget adding your JDBC driver
 libraryDependencies += &quot;org.hsqldb&quot; % &quot;hsqldb&quot; % &quot;[2,)&quot;
 
 addSbtPlugin(&quot;org.scalikejdbc&quot; %% &quot;scalikejdbc-mapper-generator&quot; % &quot;[1.7,)&quot;)
 </pre>
-<h5>build.sbt</h5>
+<h5 id="toc_6">build.sbt</h5>
 <pre class="highlight text">scalikejdbcSettings
 </pre>
-<h5>project/scalikejdbc.properties</h5>
+<h5 id="toc_7">project/scalikejdbc.properties</h5>
 <pre class="highlight text">jdbc.driver=org.h2.Driver
 jdbc.url=jdbc:h2:file:db/hello
 jdbc.username=sa
@@ -160,11 +160,11 @@ generator.encoding=UTF-8
 
 <hr/>
 
-<h3>Play Framework Integration</h3>
+<h3 id="toc_8">Play Framework Integration</h3>
 
 <p>Add <code>scalikejdbc-play-plugin</code> and <code>scalikejdbc-play-fixture-plugin</code> (optional) as Play plugins.</p>
 
-<h5>project/Build.scala</h5>
+<h5 id="toc_9">project/Build.scala</h5>
 <pre class="highlight text">val appDependencies = Seq(
   &quot;org.scalikejdbc&quot; %% &quot;scalikejdbc&quot;                     % &quot;[1.7,)&quot;,
   &quot;org.scalikejdbc&quot; %% &quot;scalikejdbc-play-plugin&quot;         % &quot;[1.7,)&quot;,
@@ -173,7 +173,7 @@ generator.encoding=UTF-8
   &quot;com.h2database&quot;  %  &quot;h2&quot;                      % &quot;1.3,)&quot;
 )
 </pre>
-<h5>conf/play.plugins</h5>
+<h5 id="toc_10">conf/play.plugins</h5>
 <pre class="highlight text">10000:scalikejdbc.PlayPlugin
 </pre>
 <p>If you use fixture-plugin too, PlayFixturePlugin should be loaded after PlayPlugin:</p>
@@ -184,14 +184,14 @@ generator.encoding=UTF-8
 
 <hr/>
 
-<h3>dbconsole</h3>
+<h3 id="toc_11">dbconsole</h3>
 
 <p>A simple console to connect database via JDBC.</p>
 
-<h5>Mac OS X, Linux</h5>
+<h5 id="toc_12">Mac OS X, Linux</h5>
 <pre class="highlight text">curl -L http://git.io/dbconsole | sh
 </pre>
-<h5>Windows</h5>
+<h5 id="toc_13">Windows</h5>
 <pre class="highlight text">http://git.io/dbconsole.bat
 </pre>
 <p>Usage: <a href="/documentation/dbconsole.html">/documentation/dbconsole</a></p>

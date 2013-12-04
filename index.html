@@ -70,11 +70,11 @@
         <div class="col-xs-10">
           <div class="content">
 <a href="https://github.com/scalikejdbc/scalikejdbc"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
-            <h1>ScalikeJDBC</h1>
+            <h1 id="toc_0">ScalikeJDBC</h1>
 
 <hr/>
 
-<h2>Just write SQL and get things done!</h2>
+<h2 id="toc_1">Just write SQL and get things done!</h2>
 
 <p>ScalikeJDBC is a tidy SQL-based DB access library for Scala developers.
 This library naturally wraps JDBC APIs and provides you easy-to-use APIs.
@@ -82,7 +82,7 @@ ScalikeJDBC is a practical and production-ready one. Use this library for your r
 
 <hr/>
 
-<h2>Getting Started</h2>
+<h2 id="toc_2">Getting Started</h2>
 
 <p>All you need to do is just adding ScalikeJDBC, JDBC driver &amp; slf4j implementation. </p>
 <pre class="highlight text">libraryDependencies ++= Seq(
@@ -92,7 +92,7 @@ ScalikeJDBC is a practical and production-ready one. Use this library for your r
   &quot;ch.qos.logback&quot;  %  &quot;logback-classic&quot;           % &quot;[1.0,)&quot;
 )
 </pre>
-<h4>First example</h4>
+<h4 id="toc_3">First example</h4>
 
 <p>Put above dependencies into your <code>build.sbt</code> and run <code>sbt console</code> now.</p>
 <pre class="highlight java"><span class="kn">import</span> <span class="nn">scalikejdbc._</span><span class="o">,</span> <span class="n">SQLInterpolation</span><span class="o">.</span><span class="na">_</span>
@@ -135,7 +135,7 @@ create table members (
 </pre>
 <p>How did it go? If you&rsquo;d like to know more details or practical examples, see documentation.</p>
 
-<h4>Typesafe Activator</h4>
+<h4 id="toc_4">Typesafe Activator</h4>
 
 <p><img alt="Typesafe" src="/images/typesafe.png" /></p>
 
@@ -147,7 +147,7 @@ create table members (
 
 <hr/>
 
-<h2>ScalikeJDBC in 5 minutes</h2>
+<h2 id="toc_5">ScalikeJDBC in 5 minutes</h2>
 
 <p>Here is a presentation for beginners which shows overview of ScalikeJDBC in 5 minutes.</p>
 
@@ -159,11 +159,11 @@ create table members (
 
 <hr/>
 
-<h2>Overview</h2>
+<h2 id="toc_6">Overview</h2>
 
 <hr/>
 
-<h3>JDBC is the standard SQL interface on the JVM</h3>
+<h3 id="toc_7">JDBC is the standard SQL interface on the JVM</h3>
 
 <p>Whether you like it or not, JDBC is a stable standard interface. Since most of RDBMS supports JDBC interface, we can access RDBMS in the same way.</p>
 
@@ -178,17 +178,17 @@ create table members (
 
 <p>We believe that ScalikeJDBC basically works with any other RDBMS (Oracle, SQL Server and so on).</p>
 
-<h4>Non-blocking?</h4>
+<h4 id="toc_8">Non-blocking?</h4>
 
 <p>Unfortunately, no. Indeed, JDBC drivers block on socket IO. So using them to talk with RDBMS in async event driven archetecture may not be appropriate. But actually most of real world applications don&rsquo;t need event-driven archetecture yet. JDBC is still important infrastructure for apps on the JVM.</p>
 
-<h4>Amazon Reshift, Facebook Presto and then&hellip;</h4>
+<h4 id="toc_9">Amazon Reshift, Facebook Presto and then&hellip;</h4>
 
 <p>If you can access some datastore via JDBC interface, that means you can access them via ScalikeJDBC too. Recently, <a href="http://docs.aws.amazon.com/redshift/latest/dg/c_redshift-postgres-jdbc.html">Amazon Redshift</a> and <a href="https://github.com/facebook/presto/tree/master/presto-jdbc">Facebook Presto</a> support JDBC interface. You can access them via ScalikeJDBC!</p>
 
 <hr/>
 
-<h3>Less dependencies</h3>
+<h3 id="toc_10">Less dependencies</h3>
 
 <p>Core part of ScalikeJDBC has so less dependencies that you won&rsquo;t be bothered by dependency hell.</p>
 
@@ -203,7 +203,7 @@ create table members (
 
 <hr/>
 
-<h3>Using only Scala standard API &amp; SQL</h3>
+<h3 id="toc_11">Using only Scala standard API &amp; SQL</h3>
 
 <p>Library users don&rsquo;t need to learn so many library-specific rules or conventions. If you&rsquo;re already familiar with Scala&rsquo;s standard library APIs and basic SQLs, that much should be enough.</p>
 <pre class="highlight java"><span class="n">val</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Alice&quot;</span>
@@ -219,7 +219,7 @@ create table members (
 
 <hr/>
 
-<h3>Type-safe DSL</h3>
+<h3 id="toc_12">Type-safe DSL</h3>
 
 <p>Since version 1.6, QueryDSL is available. It&rsquo;s a SQL-like and type-safe DSL to build DRY SQLs.</p>
 
@@ -244,7 +244,7 @@ create table members (
 
 <hr/>
 
-<h3>Flexible transaction control</h3>
+<h3 id="toc_13">Flexible transaction control</h3>
 
 <p>ScalikeJDBC provides several APIs for session/transaction control.</p>
 
@@ -279,7 +279,7 @@ create table members (
 
 <hr/>
 
-<h3>Useful Query Inspections</h3>
+<h3 id="toc_14">Useful Query Inspections</h3>
 
 <p>By default, ScalikeJDBC shows you what SQL is executed and where it is. We believe that is quite useful for debugging your apps. Logging only slow queries in production also helps you.</p>
 <pre class="highlight text">[debug] s.StatementExecutor$$anon$1 - SQL execution completed
@@ -298,7 +298,7 @@ create table members (
 
 <hr/>
 
-<h3>Testing Support</h3>
+<h3 id="toc_15">Testing Support</h3>
 
 <p>Testing support which provides the following functionalities for <a href="http://www.scalatest.org/">ScalaTest</a> and <a href="http://etorreborre.github.io/specs2/">specs2</a>.</p>
 
@@ -311,7 +311,7 @@ create table members (
 
 <hr/>
 
-<h3>Reverse Engineering</h3>
+<h3 id="toc_16">Reverse Engineering</h3>
 
 <p>You can easily get Scala code from existing database by using ScalikeJDBC&rsquo;s reverse engineering tool.</p>
 <pre class="highlight text">sbt &quot;scalikejdbc-gen [table-name (class-name)]&quot;
@@ -324,7 +324,7 @@ sbt &quot;scalikejdbc-gen companies Company&quot;
 
 <hr/>
 
-<h3>Play Framework Support</h3>
+<h3 id="toc_17">Play Framework Support</h3>
 
 <p><img alt="Play framework" src="/images/play.png" /></p>
 
@@ -334,7 +334,7 @@ sbt &quot;scalikejdbc-gen companies Company&quot;
 
 <hr/>
 
-<h2>License</h2>
+<h2 id="toc_18">License</h2>
 
 <p>Published binary files have the following copyright:</p>
 <pre class="highlight text">Copyright 2013 ScalikeJDBC committers
@@ -343,11 +343,11 @@ http://www.apache.org/licenses/LICENSE-2.0.html
 </pre>
 <hr/>
 
-<h2>Related Products</h2>
+<h2 id="toc_19">Related Products</h2>
 
 <hr/>
 
-<h3>ScalikeJDBC-Async</h3>
+<h3 id="toc_20">ScalikeJDBC-Async</h3>
 
 <p>ScalikeJDBC Extension: Non-blocking APIs in the JDBC way.</p>
 
@@ -359,21 +359,21 @@ http://www.apache.org/licenses/LICENSE-2.0.html
 
 <hr/>
 
-<h3>dbconsole</h3>
+<h3 id="toc_21">dbconsole</h3>
 
 <p>dbconsole is an extended sbt console to connect database. </p>
 
-<h4>Mac OS X, Linux</h4>
+<h4 id="toc_22">Mac OS X, Linux</h4>
 <pre class="highlight shell">curl -L http://git.io/dbconsole | sh
 </pre>
-<h4>Windows</h4>
+<h4 id="toc_23">Windows</h4>
 <pre class="highlight text">http://git.io/dbconsole.bat
 </pre>
 <p>See in detail: <a href="/documentation/dbconsole.html">/documentation/dbconsole</a></p>
 
 <hr/>
 
-<h3>Skinny ORM</h3>
+<h3 id="toc_24">Skinny ORM</h3>
 
 <p><img alt="Skinny framework" src="/images/skinny.png" /></p>
 

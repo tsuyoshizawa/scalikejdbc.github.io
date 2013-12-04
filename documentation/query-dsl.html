@@ -70,11 +70,11 @@
         <div class="col-xs-10">
           <div class="content">
 <a href="https://github.com/scalikejdbc/scalikejdbc"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
-            <h2>QueryDSL</h2>
+            <h2 id="toc_0">QueryDSL</h2>
 
 <hr/>
 
-<h3>Introduction</h3>
+<h3 id="toc_1">Introduction</h3>
 
 <p>Since version 1.6.0, Query DSL is newly added. It&rsquo;s much readable and type-safe DSL.</p>
 <pre class="highlight java"><span class="n">val</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">123</span>
@@ -113,7 +113,7 @@
 </pre>
 <hr/>
 
-<h3>QueryDSL Reference</h3>
+<h3 id="toc_2">QueryDSL Reference</h3>
 
 <p>FYI: You can find some example in QueryDSL&rsquo;s test code:</p>
 
@@ -125,7 +125,7 @@
 
 <hr/>
 
-<h4>Join queries</h4>
+<h4 id="toc_3">Join queries</h4>
 <pre class="highlight java"><span class="n">val</span> <span class="nl">orders:</span> <span class="n">List</span><span class="o">[</span><span class="n">Order</span><span class="o">]</span> <span class="o">=</span> <span class="n">withSQL</span> <span class="o">{</span>
   <span class="n">select</span>
     <span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">Order</span> <span class="n">as</span> <span class="n">o</span><span class="o">)</span>
@@ -142,7 +142,7 @@
 </pre>
 <hr/>
 
-<h4>Dynamic query building</h4>
+<h4 id="toc_4">Dynamic query building</h4>
 <pre class="highlight java"><span class="n">def</span> <span class="nf">findOrder</span><span class="p">(</span><span class="nl">id:</span> <span class="n">Long</span><span class="o">,</span> <span class="nl">accountRequired:</span> <span class="n">Boolean</span><span class="o">)</span> <span class="o">=</span> <span class="n">withSQL</span> <span class="o">{</span>
   <span class="n">select</span>
     <span class="o">.</span><span class="na">from</span><span class="o">[</span><span class="n">Order</span><span class="o">](</span><span class="n">Order</span> <span class="n">as</span> <span class="n">o</span><span class="o">)</span>
@@ -167,7 +167,7 @@
 </pre>
 <hr/>
 
-<h4>in clause</h4>
+<h4 id="toc_5">in clause</h4>
 <pre class="highlight java"><span class="n">val</span> <span class="n">inClauseResults</span> <span class="o">=</span> <span class="n">withSQL</span> <span class="o">{</span>
   <span class="n">select</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">Order</span> <span class="n">as</span> <span class="n">o</span><span class="o">)</span>
     <span class="o">.</span><span class="na">where</span><span class="o">.</span><span class="na">in</span><span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="na">id</span><span class="o">,</span> <span class="n">Seq</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">))</span>
@@ -175,7 +175,7 @@
 </pre>
 <hr/>
 
-<h4>exists/notExists clause</h4>
+<h4 id="toc_6">exists/notExists clause</h4>
 <pre class="highlight java"><span class="n">withSQL</span> <span class="o">{</span>
   <span class="n">select</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="na">id</span><span class="o">).</span><span class="na">from</span><span class="o">(</span><span class="n">Account</span> <span class="n">as</span> <span class="n">a</span><span class="o">)</span>
     <span class="o">.</span><span class="na">where</span><span class="o">.</span><span class="na">exists</span><span class="o">(</span><span class="n">select</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">Order</span> <span class="n">as</span> <span class="n">o</span><span class="o">).</span><span class="na">where</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="na">accountId</span><span class="o">,</span> <span class="n">a</span><span class="o">.</span><span class="na">id</span><span class="o">))</span>
@@ -189,14 +189,14 @@
 </pre>
 <hr/>
 
-<h4>between</h4>
+<h4 id="toc_7">between</h4>
 <pre class="highlight java"><span class="n">withSQL</span> <span class="o">{</span>
   <span class="n">select</span><span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="na">result</span><span class="o">.</span><span class="na">id</span><span class="o">).</span><span class="na">from</span><span class="o">(</span><span class="n">Order</span> <span class="n">as</span> <span class="n">o</span><span class="o">).</span><span class="na">where</span><span class="o">.</span><span class="na">between</span><span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="na">id</span><span class="o">,</span> <span class="mi">13</span><span class="o">,</span> <span class="mi">22</span><span class="o">)</span>
 <span class="o">}.</span><span class="na">map</span><span class="o">(</span><span class="n">_</span><span class="o">.</span><span class="na">int</span><span class="o">(</span><span class="mi">1</span><span class="o">)).</span><span class="na">list</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
 </pre>
 <hr/>
 
-<h4>distinct count</h4>
+<h4 id="toc_8">distinct count</h4>
 <pre class="highlight java"><span class="kn">import</span> <span class="nn">sqls.</span><span class="o">{</span> <span class="n">distinct</span><span class="o">,</span> <span class="n">count</span> <span class="o">}</span>
 <span class="n">val</span> <span class="n">productCount</span> <span class="o">=</span> <span class="n">withSQL</span> <span class="o">{</span>
   <span class="n">select</span><span class="o">(</span><span class="n">count</span><span class="o">(</span><span class="n">distinct</span><span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="na">productId</span><span class="o">))).</span><span class="na">from</span><span class="o">(</span><span class="n">Order</span> <span class="n">as</span> <span class="n">o</span><span class="o">)</span>
@@ -204,7 +204,7 @@
 </pre>
 <hr/>
 
-<h4>group by queries</h4>
+<h4 id="toc_9">group by queries</h4>
 <pre class="highlight java"><span class="kn">import</span> <span class="nn">sqls.count</span>
 <span class="n">withSQL</span> <span class="o">{</span>
   <span class="n">select</span><span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="na">accountId</span><span class="o">,</span> <span class="n">count</span><span class="o">).</span><span class="na">from</span><span class="o">(</span><span class="n">Order</span> <span class="n">as</span> <span class="n">o</span><span class="o">)</span>
@@ -214,7 +214,7 @@
 </pre>
 <hr/>
 
-<h4>union, unionAll queries</h4>
+<h4 id="toc_10">union, unionAll queries</h4>
 <pre class="highlight java"><span class="n">withSQL</span> <span class="o">{</span>
   <span class="n">select</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="na">id</span><span class="o">).</span><span class="na">from</span><span class="o">(</span><span class="n">Account</span> <span class="n">as</span> <span class="n">a</span><span class="o">)</span>
     <span class="o">.</span><span class="na">union</span><span class="o">(</span><span class="n">select</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">id</span><span class="o">).</span><span class="na">from</span><span class="o">(</span><span class="n">Product</span> <span class="n">as</span> <span class="n">p</span><span class="o">))</span>
@@ -223,7 +223,7 @@
 </pre>
 <hr/>
 
-<h4>Sub-queries</h4>
+<h4 id="toc_11">Sub-queries</h4>
 <pre class="highlight java"><span class="kn">import</span> <span class="nn">SQLSyntax.</span><span class="o">{</span> <span class="n">sum</span><span class="o">,</span> <span class="n">gt</span> <span class="o">}</span>
 <span class="n">val</span> <span class="n">x</span> <span class="o">=</span> <span class="n">SubQuery</span><span class="o">.</span><span class="na">syntax</span><span class="o">(</span><span class="s">&quot;x&quot;</span><span class="o">).</span><span class="na">include</span><span class="o">(</span><span class="n">o</span><span class="o">,</span> <span class="n">p</span><span class="o">)</span>
 <span class="n">val</span> <span class="nl">preferredClients:</span> <span class="n">List</span><span class="o">[(</span><span class="n">Int</span><span class="o">,</span> <span class="n">Int</span><span class="o">)]</span> <span class="o">=</span> <span class="n">withSQL</span> <span class="o">{</span>
@@ -236,7 +236,7 @@
 </pre>
 <hr/>
 
-<h4>Insert</h4>
+<h4 id="toc_12">Insert</h4>
 <pre class="highlight java"><span class="n">withSQL</span> <span class="o">{</span>
   <span class="n">insert</span><span class="o">.</span><span class="na">into</span><span class="o">(</span><span class="n">Member</span><span class="o">).</span><span class="na">values</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;Alice&quot;</span><span class="o">,</span> <span class="n">DateTime</span><span class="o">.</span><span class="na">now</span><span class="o">)</span>
 <span class="o">}.</span><span class="na">update</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
@@ -260,7 +260,7 @@
 </pre>
 <hr/>
 
-<h4>Insert select</h4>
+<h4 id="toc_13">Insert select</h4>
 <pre class="highlight java"><span class="k">case</span> <span class="kd">class</span> <span class="nf">Product</span><span class="p">(</span><span class="nl">id:</span> <span class="n">Int</span><span class="o">,</span> <span class="nl">name:</span> <span class="n">Option</span><span class="o">[</span><span class="n">String</span><span class="o">],</span> <span class="nl">price:</span> <span class="n">Int</span><span class="o">)</span>
 <span class="n">object</span> <span class="n">Product</span> <span class="kd">extends</span> <span class="n">SQLSyntaxSupport</span><span class="o">[</span><span class="n">Product</span><span class="o">]</span>
 <span class="k">case</span> <span class="kd">class</span> <span class="nf">LegacyProduct</span><span class="p">(</span><span class="nl">id:</span> <span class="n">Option</span><span class="o">[</span><span class="n">Int</span><span class="o">],</span> <span class="nl">name:</span> <span class="n">Option</span><span class="o">[</span><span class="n">String</span><span class="o">],</span> <span class="nl">price:</span> <span class="n">Int</span><span class="o">)</span>
@@ -273,14 +273,14 @@
 </pre>
 <hr/>
 
-<h4>Delete</h4>
+<h4 id="toc_14">Delete</h4>
 <pre class="highlight java"><span class="n">withSQL</span> <span class="o">{</span>
   <span class="n">delete</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">Member</span><span class="o">).</span><span class="na">where</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="n">Member</span><span class="o">.</span><span class="na">column</span><span class="o">.</span><span class="na">id</span><span class="o">,</span> <span class="mi">123</span><span class="o">)</span>
 <span class="o">}.</span><span class="na">update</span><span class="o">.</span><span class="na">apply</span><span class="o">()</span>
 </pre>
 <hr/>
 
-<h4>Update</h4>
+<h4 id="toc_15">Update</h4>
 <pre class="highlight java"><span class="n">withSQL</span> <span class="o">{</span>
   <span class="n">update</span><span class="o">(</span><span class="n">Member</span><span class="o">).</span><span class="na">set</span><span class="o">(</span>
     <span class="n">Member</span><span class="o">.</span><span class="na">column</span><span class="o">.</span><span class="na">name</span> <span class="o">-&gt;</span> <span class="s">&quot;Chris&quot;</span><span class="o">,</span>
@@ -290,7 +290,7 @@
 </pre>
 <hr/>
 
-<h4>Avoiding Method Name Conflict</h4>
+<h4 id="toc_16">Avoiding Method Name Conflict</h4>
 
 <p>For example, if your code already uses <code>select</code>, <code>insert</code> or <code>update</code> as method name, name confliction occurs.</p>
 <pre class="highlight java"><span class="n">def</span> <span class="nf">insert</span><span class="p">(</span><span class="nl">e:</span> <span class="n">Member</span><span class="o">)(</span><span class="n">implicit</span> <span class="nl">session:</span> <span class="n">DBSession</span><span class="o">)</span> <span class="o">{</span>
